@@ -1,8 +1,9 @@
 buildscript {
 	ext {
+    jacksonModuleVersion = '2.9.6'
 		kotlinVersion = '1.2.41'
 		graphqlJavaToolsVersion = '5.2.3'
-		graphqlSpringBootVersion = '5.0.2'
+    graphqlJavaVersion = '9.2'
 		springBootVersion = '2.0.4.RELEASE'
 	}
 	repositories {
@@ -41,20 +42,23 @@ repositories {
 	mavenCentral()
 }
 
-
-dependencies {
-	compile("com.graphql-java:graphql-java-tools:${graphqlJavaToolsVersion}")
-	compile("com.graphql-java:graphql-spring-boot-starter:${graphqlSpringBootVersion}")
-	compile('org.springframework.boot:spring-boot-starter-webflux')
-	compile('com.fasterxml.jackson.module:jackson-module-kotlin')
-	compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	compile("org.jetbrains.kotlin:kotlin-reflect")
-
-	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile("com.graphql-java:graphql-spring-boot-test:${graphqlSpringBootVersion}")
-	testCompile('io.projectreactor:reactor-test')
+configurations {
+  compile.exclude module: "spring-boot-starter-tomcat"
 }
 
+dependencies {
+  compile("com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonModuleVersion}")
+  compile("com.graphql-java:graphql-java-tools:${graphqlJavaToolsVersion}")
+  compile("com.graphql-java:graphql-java:${graphqlJavaVersion}")
+  // DO NOT import `graphql-spring-boot-starter` but only `graphql-java`
+  compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+  compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+  compile("org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}")
+  compile("org.springframework.boot:spring-boot-starter-undertow:${springBootVersion}")
+
+	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+	testCompile("io.projectreactor:reactor-test")
+}
 
 // Allows to use `./gradlew bootRun -Dspring.profiles.active=dev` to run the app with a given profile
 bootRun.systemProperties = System.properties

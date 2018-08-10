@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class ReactiveGraphqlExampleApplication
 
 fun main(args: Array<String>) {
-    runApplication<ReactiveGraphqlExampleApplication>(*args)
+  runApplication<ReactiveGraphqlExampleApplication>(*args)
 }

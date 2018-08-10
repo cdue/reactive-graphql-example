@@ -7,5 +7,5 @@ import org.springframework.stereotype.Component
 
 @Component
 class Mutation : GraphQLMutationResolver {
-    fun addStockQuote(stockQuote: StockQuoteInput): StockQuote? = null
+  fun addStockQuote(stockQuote: StockQuoteInput): StockQuote? = null
 }

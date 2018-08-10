@@ -6,5 +6,5 @@ import org.springframework.stereotype.Component
 
 @Component
 class Subscription : GraphQLSubscriptionResolver {
-    fun stockQuotes(stockCodes: List<String>?): StockQuote? = null
+  fun stockQuotes(stockCodes: List<String>?): StockQuote? = null
 }
