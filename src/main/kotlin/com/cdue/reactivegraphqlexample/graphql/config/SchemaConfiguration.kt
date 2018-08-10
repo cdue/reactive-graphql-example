@@ -1,9 +1,6 @@
 package com.cdue.reactivegraphqlexample.graphql.config
 
-import com.cdue.reactivegraphqlexample.graphql.resolver.Mutation
-import com.cdue.reactivegraphqlexample.graphql.resolver.Query
-import com.cdue.reactivegraphqlexample.graphql.resolver.StockIndexResolver
-import com.cdue.reactivegraphqlexample.graphql.resolver.StockIndexValueResolver
+import com.cdue.reactivegraphqlexample.graphql.resolver.*
 import com.cdue.reactivegraphqlexample.graphql.scalar.DateScalar
 import com.coxautodev.graphql.tools.SchemaParser
 import graphql.schema.GraphQLSchema
@@ -17,8 +14,7 @@ import org.springframework.context.annotation.Configuration
 class SchemaConfiguration(
         private val query: Query,
         private val mutation: Mutation,
-        private val stockIndexResolver: StockIndexResolver,
-        private val stockIndexValueResolver: StockIndexValueResolver,
+        private val subscription: Subscription,
         private val dateScalar: DateScalar) {
 
     @Bean
@@ -26,7 +22,7 @@ class SchemaConfiguration(
         return SchemaParser.newParser()
                 .file("graphql/schema.graphqls")
                 .scalars(dateScalar)
-                .resolvers(query, mutation, stockIndexResolver, stockIndexValueResolver)
+                .resolvers(query, mutation, subscription)
                 .build()
                 .makeExecutableSchema()
     }

@@ -1,13 +1,29 @@
 package com.cdue.reactivegraphqlexample.graphql.resolver
 
-import com.cdue.reactivegraphqlexample.model.StockIndex
-import com.cdue.reactivegraphqlexample.repository.StockIndexRepository
+import com.cdue.reactivegraphqlexample.model.Stock
+import com.cdue.reactivegraphqlexample.model.StockQuote
+import com.cdue.reactivegraphqlexample.repository.StockQuoteRepository
+import com.cdue.reactivegraphqlexample.repository.StockRepository
 import com.coxautodev.graphql.tools.GraphQLQueryResolver
 import org.springframework.stereotype.Component
 
 @Component
-class Query(private val stockIndexRepository: StockIndexRepository) : GraphQLQueryResolver {
+class Query(private val stockQuoteRepository: StockQuoteRepository,
+            private val stockRepository: StockRepository) : GraphQLQueryResolver {
 
-    fun getStockIndexes(): List<StockIndex> = stockIndexRepository.getStockIndexes()
-    fun stockIndex(code: String): StockIndex? = stockIndexRepository.getStockIndex(code)
+    fun stocks(): List<Stock> {
+        return stockRepository.findAll()
+    }
+
+    fun stock(code: String): Stock? {
+        return stockRepository.findOne(code)
+    }
+
+    fun stockQuotes(stockCode: String): List<StockQuote> {
+        return stockQuoteRepository.findByStockCode(stockCode)
+    }
+
+    fun stockPrice(stockCode: String): Float? {
+        return stockQuoteRepository.findLastByStockCode(stockCode)?.price
+    }
 }

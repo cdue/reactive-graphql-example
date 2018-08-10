@@ -1,38 +1,40 @@
 schema {
     query: Query
     mutation: Mutation
-    # subscription: Subscription
+    subscription: Subscription
 }
 
 type Query {
-    stockIndexes: [StockIndex!]
-    stockIndex(code: ID!): StockIndex
+    stocks: [Stock!]
+    stock(code: ID!): Stock
+    stockQuotes(stockCode: String!): [StockQuote!]
+    stockPrice(code: ID!): Float
 }
 
 type Mutation {
-    addStockIndexValue(stockIndexValue: StockIndexValueInput!): StockIndexValue
+    addStockQuote(stockQuote: StockQuoteInput!): StockQuote
 }
 
-# type Subscription {
-# }
+type Subscription {
+    stockQuotes(stockCodes: [String]): StockQuote!
+}
 
-type StockIndex {
+type Stock {
     code: ID!
     name: String!
-    currentValue: StockIndexValue!
-    values(from: DateTime, to: DateTime, limit: Int): [StockIndexValue!]
 }
 
-type StockIndexValue {
-    index: StockIndex!
-    value: Float!
+type StockQuote {
+    stockCode: String!
     date: DateTime!
+    price: Float!
+    priceChange: Float!
 }
 
-input StockIndexValueInput {
-    indexCode: ID!
-    value: Float!
-    date: DateTime!
+input StockQuoteInput {
+    stockCode: String!
+    price: Float!
+    date: DateTime
 }
 
 scalar DateTime
