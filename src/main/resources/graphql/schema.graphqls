@@ -1,0 +1,38 @@
+schema {
+    query: Query
+    mutation: Mutation
+    # subscription: Subscription
+}
+
+type Query {
+    stockIndexes: [StockIndex!]
+    stockIndex(code: ID!): StockIndex
+}
+
+type Mutation {
+    addStockIndexValue(stockIndexValue: StockIndexValueInput!): StockIndexValue
+}
+
+# type Subscription {
+# }
+
+type StockIndex {
+    code: ID!
+    name: String!
+    currentValue: StockIndexValue!
+    values(from: DateTime, to: DateTime, limit: Int): [StockIndexValue!]
+}
+
+type StockIndexValue {
+    index: StockIndex!
+    value: Float!
+    date: DateTime!
+}
+
+input StockIndexValueInput {
+    indexCode: ID!
+    value: Float!
+    date: DateTime!
+}
+
+scalar DateTime
